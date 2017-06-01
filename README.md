@@ -34,3 +34,5 @@ objecten iets van game hoeven te weten. De rest van de classes daarentegen hebbe
 Game erbij kan.
 
 ![ulm diagram](./class-diagram.PNG)
+
+test
