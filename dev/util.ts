@@ -8,5 +8,16 @@ class Util{
 
     }
 
+    /**
+     * verwijder een item uit een array, en verwijder meteen het dom element uit de body
+     */
+    public static removeFromGame(go:gameObject, arr:Array<any>){
+        go.div.remove();
+        let i:number = arr.indexOf(go);
+        if(i != -1) {
+            arr.splice(i, 1);
+        }
+    }
+
 
 }

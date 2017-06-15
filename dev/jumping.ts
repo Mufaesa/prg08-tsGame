@@ -5,18 +5,21 @@ class Jumping implements Behaviour{
 
     constructor(p:Player){
         this.player = p;
-        this.jumpDirection = -4;
+        this.jumpDirection = -18;
+        window.addEventListener("keydown", (e: KeyboardEvent) => this.onkeydown(e));
     }
+
     draw(){
         this.player.x += this.player.speed;
         this.player.y += this.jumpDirection;
-        if (this.player.y < 50) this.jumpDirection = 4;
+        this.jumpDirection += 1;
+
         if (this.player.y > 140){
             this.player.behaviour = new Running(this.player);
         } 
     }
 
-    onkeydown(){
-        
+    onkeydown(e: KeyboardEvent){
+     //        this.player.behaviour = new DoubleJumping(this.player);
     }
 }

@@ -44,6 +44,17 @@ player {
     width:60px; height:128px;
 }
 
+textBalloon {
+    z-index: 5;
+    background-image: url(../images/textBalloon.png);
+    height: 93px;
+    width: 114px;
+}
+
+gameover {
+    z-index: 5;
+}
+
 .crashed {
     background-image: url(../images/dead.png);
     width:128px; height:128px;
@@ -62,9 +73,23 @@ score {
     padding:20px;
 }
 
+#welcome {
+    z-index: 5;
+    color: white;
+    font-size: 26px;
+    padding-left: 30%;
+    padding-top: 10%;
+
+}
+
 block {
     background-image: url(../images/enemy.gif);
     width:32px; height: 31px;
+}
+
+coin {
+    background-image: url(../images/coin.gif);
+    width:120px; height: 120px;
 }
 
 

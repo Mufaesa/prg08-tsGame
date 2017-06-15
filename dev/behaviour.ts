@@ -1,6 +1,6 @@
 interface Behaviour{
     
     draw():void
-    onkeydown();
+    onkeydown(e);
 
 }

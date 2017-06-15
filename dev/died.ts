@@ -1,7 +1,7 @@
 /// <reference path="game.ts"/>
 
 
-class Crashing implements Behaviour{
+class Died implements Behaviour{
 
     private player:Player;
 
@@ -9,8 +9,7 @@ class Crashing implements Behaviour{
         this.player = p
     }
 
-    draw(){
-        
+    draw(){   
             
         //calling the singleton to end the game
        let g : Game = Game.getInstance();

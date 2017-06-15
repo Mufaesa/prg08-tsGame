@@ -19,13 +19,18 @@ var gameObject = (function () {
 }());
 var Block = (function (_super) {
     __extends(Block, _super);
-    function Block(parent, x) {
+    function Block(parent, x, speed, s) {
         var _this = _super.call(this, "block", parent, x, 240) || this;
-        _this.height = 31;
-        _this.width = 32;
-        _this.speed = -4;
+        s.subscribe(_this);
+        _this.height = Enums.Dimensions.blockHeight;
+        _this.width = Enums.Dimensions.blockWidth;
+        _this.speed = speed;
+        ;
         return _this;
     }
+    Block.prototype.notify = function () {
+        this.speed = 0;
+    };
     Block.prototype.draw = function () {
         this.x += this.speed;
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
@@ -41,23 +46,31 @@ var Util = (function () {
             object1.y < object2.y + object2.height &&
             object1.height + object1.y > object2.y);
     };
+    Util.removeFromGame = function (go, arr) {
+        go.div.remove();
+        var i = arr.indexOf(go);
+        if (i != -1) {
+            arr.splice(i, 1);
+        }
+    };
     return Util;
 }());
 var Player = (function (_super) {
     __extends(Player, _super);
     function Player(parent) {
         var _this = _super.call(this, "player", parent, 100, 143) || this;
+        _this.observers = new Array();
         _this.deadState = 0;
         _this.behaviour = new Running(_this);
         _this.speed = 0;
-        _this.height = 128;
-        _this.width = 60;
+        _this.height = Enums.Dimensions.playerHeight;
+        _this.width = Enums.Dimensions.playerWidth;
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         return _this;
     }
     Player.prototype.onKeyDown = function (e) {
         console.log(e.key);
-        this.behaviour.onkeydown();
+        this.behaviour.onkeydown(e);
     };
     Player.prototype.setDead = function (deadState) {
         this.deadState = deadState;
@@ -69,15 +82,25 @@ var Player = (function (_super) {
         this.behaviour.draw();
         this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
     };
+    Player.prototype.subscribe = function (o) {
+        this.observers.push(o);
+    };
+    Player.prototype.unsubscribe = function (o) {
+    };
     return Player;
 }(gameObject));
 var Game = (function () {
     function Game() {
         var _this = this;
+        this.blocks = new Array();
+        this.GO = new Array();
         this.score = 0;
         var container = document.getElementById("container");
-        this.player = new Player(container);
-        this.block = new Block(container, 800);
+        this.GO.push(this.player = new Player(container));
+        for (var c = 2000; c < 5000; c += Math.floor(Math.random() * 500) + 200) {
+            console.log("block created");
+            this.GO.push(new Block(container, c, Math.floor(Math.random() * 3) + -6, this.player));
+        }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.getInstance = function () {
@@ -88,13 +111,40 @@ var Game = (function () {
     };
     Game.prototype.gameLoop = function () {
         var _this = this;
-        this.player.draw();
-        this.block.draw();
-        if (Util.checkCollision(this.player, this.block)) {
-            this.player.behaviour = new Crashing(this.player);
+        if (this.score > 0 && this.score < 99) {
+            document.getElementById("welcome").innerHTML = "Welcome to 0909257";
         }
-        else {
-            this.updateScore();
+        if (this.score > 100 && this.score < 199) {
+            document.getElementById("welcome").innerHTML = "Press any key to jump";
+        }
+        if (this.score > 200 && this.score < 299) {
+            document.getElementById("welcome").innerHTML = "Good luck and have fun!";
+        }
+        if (this.score > 300) {
+            document.getElementById("welcome").innerHTML = "";
+        }
+        for (var _i = 0, _a = this.GO; _i < _a.length; _i++) {
+            var g = _a[_i];
+            if (g instanceof Player) {
+                g.draw();
+            }
+            if (g instanceof Block) {
+                g.draw();
+                if (Util.checkCollision(g, this.player)) {
+                    this.player.behaviour = new Died(this.player);
+                    console.log("endgame");
+                    for (var _b = 0, _c = this.player.observers; _b < _c.length; _b++) {
+                        var o = _c[_b];
+                        o.notify();
+                    }
+                }
+                else {
+                    this.updateScore();
+                }
+                if (g.x <= -30) {
+                    Util.removeFromGame(g, this.blocks);
+                }
+            }
         }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
@@ -108,7 +158,9 @@ var Game = (function () {
         }
     };
     Game.prototype.endGame = function () {
-        console.log("endgame");
+        var endDiv = document.getElementById("welcome");
+        endDiv.innerHTML = "Game Over<br>Score: " + this.score;
+        TweenLite.to(endDiv, 2, { ease: SlowMo.ease.config(0.7, 0.7, false), y: 400 });
         this.player.setDead(1);
         this.player.div.classList.add("crashed");
         document.getElementById("plateau").classList.add("animationpaused");
@@ -119,33 +171,44 @@ var Game = (function () {
 window.addEventListener("load", function () {
     Game.getInstance();
 });
-var Crashing = (function () {
-    function Crashing(p) {
+var Died = (function () {
+    function Died(p) {
         this.player = p;
     }
-    Crashing.prototype.draw = function () {
+    Died.prototype.draw = function () {
         var g = Game.getInstance();
         g.endGame();
     };
-    Crashing.prototype.onkeydown = function () {
+    Died.prototype.onkeydown = function () {
     };
-    return Crashing;
+    return Died;
 }());
+var Enums;
+(function (Enums) {
+    var Dimensions;
+    (function (Dimensions) {
+        Dimensions[Dimensions["playerHeight"] = 128] = "playerHeight";
+        Dimensions[Dimensions["playerWidth"] = 60] = "playerWidth";
+        Dimensions[Dimensions["blockHeight"] = 31] = "blockHeight";
+        Dimensions[Dimensions["blockWidth"] = 32] = "blockWidth";
+    })(Dimensions = Enums.Dimensions || (Enums.Dimensions = {}));
+})(Enums || (Enums = {}));
 var Jumping = (function () {
     function Jumping(p) {
+        var _this = this;
         this.player = p;
-        this.jumpDirection = -4;
+        this.jumpDirection = -18;
+        window.addEventListener("keydown", function (e) { return _this.onkeydown(e); });
     }
     Jumping.prototype.draw = function () {
         this.player.x += this.player.speed;
         this.player.y += this.jumpDirection;
-        if (this.player.y < 50)
-            this.jumpDirection = 4;
+        this.jumpDirection += 1;
         if (this.player.y > 140) {
             this.player.behaviour = new Running(this.player);
         }
     };
-    Jumping.prototype.onkeydown = function () {
+    Jumping.prototype.onkeydown = function (e) {
     };
     return Jumping;
 }());
@@ -161,4 +224,15 @@ var Running = (function () {
     };
     return Running;
 }());
+var TextBalloon = (function (_super) {
+    __extends(TextBalloon, _super);
+    function TextBalloon(parent) {
+        return _super.call(this, "textBalloon", parent, 0, -60) || this;
+    }
+    TextBalloon.prototype.draw = function () {
+        this.x += this.speed;
+        this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
+    };
+    return TextBalloon;
+}(gameObject));
 //# sourceMappingURL=main.js.map

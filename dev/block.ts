@@ -1,21 +1,27 @@
 /// <reference path="gameObject.ts"/>
 
-class Block extends gameObject {
+class Block extends gameObject implements Observer{
 
     public speed:number;
     public div:HTMLElement;
     public x:number;
     public y:number;
+    public balloon: TextBalloon;
             
-    constructor(parent:HTMLElement, x: number) {
+    constructor(parent:HTMLElement, x: number, speed:number, s:Subject) {
         super("block", parent, x, 240);
 
+        s.subscribe(this);
 
-        this.height = 31;
-        this.width = 32;
+        this.height = Enums.Dimensions.blockHeight;
+        this.width = Enums.Dimensions.blockWidth;
 
-        this.speed = -4;
+        this.speed = speed;;
    
+    }
+
+    public notify(){
+        this.speed = 0;
     }
 
     public draw():void {

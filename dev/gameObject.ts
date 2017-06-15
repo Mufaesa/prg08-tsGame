@@ -1,4 +1,4 @@
-class gameObject{
+abstract class gameObject{
 
     public speed:number;
     public x: number;
