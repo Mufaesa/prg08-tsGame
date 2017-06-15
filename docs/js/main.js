@@ -92,7 +92,6 @@ var Player = (function (_super) {
 var Game = (function () {
     function Game() {
         var _this = this;
-        this.blocks = new Array();
         this.GO = new Array();
         this.score = 0;
         var container = document.getElementById("container");
@@ -233,15 +232,4 @@ var Running = (function () {
     };
     return Running;
 }());
-var TextBalloon = (function (_super) {
-    __extends(TextBalloon, _super);
-    function TextBalloon(parent) {
-        return _super.call(this, "textBalloon", parent, 0, -60) || this;
-    }
-    TextBalloon.prototype.draw = function () {
-        this.x += this.speed;
-        this.div.style.transform = "translate(" + this.x + "px," + this.y + "px)";
-    };
-    return TextBalloon;
-}(gameObject));
 //# sourceMappingURL=main.js.map

@@ -52,4 +52,4 @@ Beide zijn ingebouwd in enums.ts. De namespace die wordt gebruikt is Enums. Deze
 
 Library.
 Het library dat ik gebruik is TweenLite. Dit is een library dat wordt gebruikt voor het animeren van DOM elementen. In de index.html wordt een script ingeladen en het greensock.d.ts bestand wordt gebruikt om het bruikbaar te maken in Typescript.
-In de functie endGame in game.ts wordt deze library aangeroepen om de eindtitel naar beneden te halen. Er wordt een div met tekst naar beneden gehaald om je eindscore te laten zien. (zie game.ts regels 94,95,96)
+In de functie endGame in game.ts wordt deze library aangeroepen om de eindtitel naar beneden te halen. Er wordt een div met tekst naar beneden gehaald om je eindscore te laten zien. (zie game.ts regels 93,94,95)

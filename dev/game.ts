@@ -9,7 +9,6 @@ class Game {
 
     private player : Player;
     private block : Block;
-    private blocks : Array<Block> = new Array<Block>();
     private GO:Array<gameObject> = new Array<gameObject>(); 
 
     public score: number = 0;
@@ -108,7 +107,6 @@ class Game {
     }
      
 } 
-
 
 
 // load using singleton
