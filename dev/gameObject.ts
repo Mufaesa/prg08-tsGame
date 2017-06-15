@@ -1,3 +1,4 @@
+//Abstract class
 abstract class gameObject{
 
     public speed:number;

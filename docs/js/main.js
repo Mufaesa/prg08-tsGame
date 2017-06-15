@@ -97,9 +97,9 @@ var Game = (function () {
         this.score = 0;
         var container = document.getElementById("container");
         this.GO.push(this.player = new Player(container));
-        for (var c = 2000; c < 5000; c += Math.floor(Math.random() * 500) + 200) {
+        for (var c = 2000; c < 4000; c += Math.floor(Math.random() * 500) + 200) {
             console.log("block created");
-            this.GO.push(new Block(container, c, Math.floor(Math.random() * 3) + -6, this.player));
+            this.GO.push(new Block(container, c, -5, this.player));
         }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
@@ -114,13 +114,13 @@ var Game = (function () {
         if (this.score > 0 && this.score < 99) {
             document.getElementById("welcome").innerHTML = "Welcome to 0909257";
         }
-        if (this.score > 100 && this.score < 199) {
+        if (this.score > 100 && this.score < 159) {
             document.getElementById("welcome").innerHTML = "Press any key to jump";
         }
-        if (this.score > 200 && this.score < 299) {
+        if (this.score > 200 && this.score < 199) {
             document.getElementById("welcome").innerHTML = "Good luck and have fun!";
         }
-        if (this.score > 300) {
+        if (this.score > 239) {
             document.getElementById("welcome").innerHTML = "";
         }
         for (var _i = 0, _a = this.GO; _i < _a.length; _i++) {
@@ -142,9 +142,13 @@ var Game = (function () {
                     this.updateScore();
                 }
                 if (g.x <= -30) {
-                    Util.removeFromGame(g, this.blocks);
+                    Util.removeFromGame(g, this.GO);
+                    console.log(this.GO.length);
                 }
             }
+        }
+        if (this.GO.length == 1) {
+            this.wonGame();
         }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
@@ -159,12 +163,17 @@ var Game = (function () {
     };
     Game.prototype.endGame = function () {
         var endDiv = document.getElementById("welcome");
-        endDiv.innerHTML = "Game Over<br>Score: " + this.score;
+        endDiv.innerHTML = "Game Over<br>Score: " + Math.round(this.score);
         TweenLite.to(endDiv, 2, { ease: SlowMo.ease.config(0.7, 0.7, false), y: 400 });
         this.player.setDead(1);
         this.player.div.classList.add("crashed");
         document.getElementById("plateau").classList.add("animationpaused");
         document.getElementById("sky").classList.add("animationpaused");
+    };
+    Game.prototype.wonGame = function () {
+        var endDiv = document.getElementById("welcome");
+        endDiv.innerHTML = "Well done!<br>Your final score: " + Math.round(this.score) + "<br> press f5 to restart";
+        TweenLite.to(endDiv, 2, { ease: SlowMo.ease.config(0.7, 0.7, false), y: 400 });
     };
     return Game;
 }());

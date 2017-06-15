@@ -20,6 +20,7 @@ class Block extends gameObject implements Observer{
    
     }
 
+    //Observer action
     public notify(){
         this.speed = 0;
     }
