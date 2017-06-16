@@ -53,3 +53,19 @@ Beide zijn ingebouwd in enums.ts. De namespace die wordt gebruikt is Enums. Deze
 Library.
 Het library dat ik gebruik is TweenLite. Dit is een library dat wordt gebruikt voor het animeren van DOM elementen. In de index.html wordt een script ingeladen en het greensock.d.ts bestand wordt gebruikt om het bruikbaar te maken in Typescript.
 In de functie endGame in game.ts wordt deze library aangeroepen om de eindtitel naar beneden te halen. Er wordt een div met tekst naar beneden gehaald om je eindscore te laten zien. (zie game.ts regels 93,94,95)
+
+# peer review week 7 door Wilco van Dijk
+
+In main.ts in de gameloop heb je 4 if statements met daarin document.getElementById in elke if. Je kan ook in het begin dit element in een variabele zetten en dan in elke if de variable .innerHTML aanpassen
+
+Alle classes die behaviour implementeren hebben een draw functie. In de behaviour.ts staat deze niet. Als er sowieso een draw functie moet zijn zal ik deze ook in de interface zetten zodat je verplicht bent deze te gebruiken!
+
+in block.ts wordt er een baloon gedeclareerd maar hij kent geen Textbaloon.
+
+player.ts en block.ts hebben beiden apart een x en y terwijl je deze ook in gameobject zou kunnen doen. Dit scheelt code schrijven en het wordt overzichtelijker!
+
+Waarom geen endless runner gemaakt?
+
+Alle eisen zijn in de game verwerkt! Sommige wat uitgebreider dan de andere.
+
+
