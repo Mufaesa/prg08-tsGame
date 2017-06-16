@@ -66,6 +66,6 @@ player.ts en block.ts hebben beiden apart een x en y terwijl je deze ook in game
 
 Waarom geen endless runner gemaakt?
 
-Alle eisen zijn in de game verwerkt! Sommige wat uitgebreider dan de andere.
+Alle eisen zijn in de game verwerkt! Sommige wat uitgebreider dan de andere!
 
 
